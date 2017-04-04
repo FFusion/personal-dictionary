@@ -1,0 +1,158 @@
+
+<div class="site-wrapper">
+    <div class="site-wrapper-inner">
+        <div class="cover-container">
+            <div class="row">
+                <div class="col-md-6 col-xs-4">
+                    <md-input-container class="md-block">
+                        <label for="serviceFilter">{{constant.searchWord.rus}}</label>
+                        <input type="text" name="serviceFilter" id="serviceFilter" ng-model="serviceFilter" placeholder="{{constant.searchWord.rus}}..." ng-change="filterChange()"/>
+                    </md-input-container>
+
+
+                </div>
+                <div class="col-md-6 col-xs-8">
+                    <md-button class="md-raised md-primary pull-right"  ng-click="showAllProperties()" ng-if="showProperties">{{constant.showAll.rus}}</md-button>
+                    <md-button class="md-raised md-primary pull-right"  ng-click="closeAllProperties()" ng-if="!showProperties">{{constant.closeAll.rus}}</md-button>
+                    <md-button class="md-raised md-primary pull-right"   data-toggle="modal" data-target="#add-word">{{constant.addWord.rus}}</md-button>
+                    <md-button class="md-raised md-primary pull-right"   data-toggle="modal" data-target="#add-group">{{constant.addGroup.rus}}</md-button>
+                </div>
+            </div>
+            <div class="words-list">
+                <fieldset class="standard">
+                    <legend>{{constant.legentTitleOne.rus}}</legend>
+                    <md-list flex ng-repeat="property in groups" >
+                        <md-subheader class="words-list-group md-no-sticky" ng-class="{'show-group' : property.show }" ng-click="hideProperties(property)">
+                            <i ng-if="!property.show" class="ion-document"></i>
+                            <i ng-if="property.show" class="ion-document-text"></i>
+                            {{property.name}}
+                        </md-subheader>
+                        <div ng-if="property.show">
+                            <md-list-item class="md-3-line" ng-click="null">
+                                <div class="md-list-item-text" layout="column">
+                                    <div class="row">
+                                        <div class="col-md-6 col-xs-6 text-center">
+                                            <md-button class="md-raised md-primary" ng-click="hide(property, 'eng')">{{constant.hideAll.rus}}</md-button>
+                                        </div>
+                                        <div class="col-md-6 col-xs-6 text-center">
+                                            <md-button class="md-raised md-primary" ng-click="hide(property, 'rus')">{{constant.hideAll.rus}}</md-button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </md-list-item>
+                            <hr>
+                            <md-list-item class="md-3-line list-item" ng-repeat="word in property.words | filter:serviceFilter">
+                                <div class="md-list-item-text words-md" layout="column" data-toggle="modal" data-target="#update-word" ng-click="updateWordModal(word)" >
+                                    <div class="row">
+                                        <div class="col-md-6 col-xs-6">
+                                            <md-button class="md-raised md-button md-ink-ripple" ng-if="word.hideEng" ng-click="word.hideEng = false">{{constant.show.rus}}</md-button>
+                                            <span ng-class="{'hide-td':word.hideEng}" ng-if="!word.hideEng">{{ word.eng }}</span>
+                                        </div>
+                                        <div class="col-md-6 col-xs-6">
+                                            <span ng-class="{'hide-td':word.hideRus}" ng-if="!word.hideRus">{{ word.rus }}</span>
+                                            <md-button class="md-raised md-button md-ink-ripple" ng-if="word.hideRus" ng-click="word.hideRus = false">{{constant.show.rus}}</md-button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </md-list-item>
+                        </div>
+
+                        <md-divider ></md-divider>
+                    </md-list>
+                    <md-button class="md-raised md-primary primary pull-right" autofocus ng-click="trainig()">{{constant.goTrainig.rus}}</md-button>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="modal" id="add-word" tabindex="-1" role="dialog" data-backdrop="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header md-toolbar-tools">{{constant.addWord.rus}}</div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <md-input-container class="md-block">
+                            <label for="rus" class="control-label">{{constant.onRussian.rus}}</label>
+                            <input id="rus" type="text" ng-model="word.rus"/>
+                        </md-input-container>
+                    </div>
+                    <div class="col-md-6">
+                        <md-input-container class="md-block">
+                            <label for="eng" class="control-label">{{constant.onEnglish.rus}}</label>
+                            <input id="eng" type="text" ng-model="word.eng"/>
+                        </md-input-container>
+                    </div>
+                    <div class="col-md-12">
+                        <label for="groupWord" class="control-label">{{constant.group.rus}}</label>
+                        <select id="groupWord" type="text" class="form-control" ng-model="word.group" ng-options="group.name for group in groups"></select>
+                    </div>
+                </div>                                
+            </div>
+            <div class="modal-footer">
+                <md-button class="md-raised md-button md-ink-ripple" data-dismiss="modal" class="danger">{{constant.cancel.rus}}</md-button>
+                <md-button class="md-raised md-primary" data-dismiss="modal" class="primary" autofocus ng-click="addWord()">{{constant.add.rus}}</md-button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="add-group" tabindex="-1" role="dialog" data-backdrop="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header md-toolbar-tools">{{constant.addGroup.rus}}</div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <md-input-container class="md-block">
+                            <label for="groupName" class="control-label">{{constant.nameGroup.rus}}</label>
+                            <input id="groupName" type="text" ng-model="group.name"/>
+                        </md-input-container>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <md-button class="md-raised md-button md-ink-ripple" data-dismiss="modal" class="danger">{{constant.cancel.rus}}</md-button>
+                <md-button class="md-raised md-primary" data-dismiss="modal" class="primary" autofocus ng-click="addGroup()">{{constant.add.rus}}</md-button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal" id="update-word" tabindex="-1" role="dialog" data-backdrop="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header md-toolbar-tools">{{constant.edit.rus}}</div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <md-input-container class="md-block">
+                            <label for="rus-update" class="control-label">{{constant.onRussian.rus}}</label>
+                            <input id="rus-update" type="text" ng-model="word.rus"/>
+                        </md-input-container>
+                    </div>
+                    <div class="col-md-6">
+                        <md-input-container class="md-block">
+                            <label for="eng-update" class="control-label">{{constant.onEnglish.rus}}</label>
+                            <input id="eng-update" type="text" ng-model="word.eng"/>
+                        </md-input-container>
+                    </div>
+                    <div class="col-md-12">
+                        <label for="groupWord-update" class="control-label">{{constant.group.rus}}</label>
+                        <select id="groupWord-update" type="text" class="form-control" ng-model="word.group" ng-options="group.name for group in groups"></select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <md-button class="md-raised md-button md-ink-ripple" data-dismiss="modal" class="danger">{{constant.cancel.rus}}</md-button>
+                <md-button class="md-raised md-button md-warn md-ink-ripple" data-dismiss="modal" class="danger" ng-click="removeWord()">{{constant.remove.rus}}</md-button>
+                <md-button class="md-raised md-primary" class="btn btn-primary" data-dismiss="modal" class="primary" autofocus ng-click="saveWord()">{{constant.save.rus}}</md-button>
+            </div>
+        </div>
+    </div>
+</div>

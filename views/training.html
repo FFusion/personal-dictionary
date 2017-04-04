@@ -1,0 +1,68 @@
+<div class="site-wrapper">
+    <div class="site-wrapper-inner">
+        <div class="cover-container">
+            <div class="words-list">
+                <fieldset class="standard standard-trainig">
+                    <legend>{{constant.legentTitleTwo.rus}}</legend>
+                    <div class="row text-center standard-trainig-header">
+                        <div class="col-md-12">
+                            <span>{{constant.headerText.rus}}</span>
+                        </div>
+                    </div>
+
+                    <div class="row standard-trainig-block">
+                        <div class="col-md-12">
+                            <md-input-container class="md-block">
+                                <label for="numberWord">{{constant.numberWord.rus}}</label>
+                                <input type="number" name="numberWord" id="numberWord" min="1" ng-model="training.number" placeholder="{{constant.numberWord.rus}}..."/>
+                            </md-input-container>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="language" class="control-label">{{constant.language.rus}}</label>
+                            <select id="language" type="text" class="form-control" ng-model="training.language" ng-options="language.name for language in languages"></select>
+                        </div>
+                    </div>
+
+
+                    <div class="row standard-trainig-block">
+                        <div class="col-md-12">
+                            <md-button class="md-raised md-button md-ink-ripple pull-left" ng-click="back()">{{constant.back.rus}}</md-button>
+                            <md-button class="md-raised md-button md-primary pull-right" ng-click="getTrainingWords()">{{constant.getWord.rus}}</md-button>
+                        </div>
+                    </div>
+
+
+                    <div ng-if="trainWords.length > 0">
+                        <md-list-item class="md-3-line" ng-click="null">
+                            <div class="md-list-item-text" layout="column">
+                                <div class="row">
+                                    <div class="col-md-6 col-xs-6 text-center">
+                                        <md-button class="md-raised md-primary" ng-click="hide(trainWords, 'eng')">{{constant.hideAll.rus}}</md-button>
+                                    </div>
+                                    <div class="col-md-6 col-xs-6 text-center">
+                                        <md-button class="md-raised md-primary" ng-click="hide(trainWords, 'rus')">{{constant.hideAll.rus}}</md-button>
+                                    </div>
+                                </div>
+                            </div>
+                        </md-list-item>
+                        <hr>
+                        <md-list-item class="md-3-line list-item" ng-repeat="word in trainWords | filter:serviceFilter">
+                            <div class="md-list-item-text words-md" layout="column" data-toggle="modal" data-target="#update-word" ng-click="updateWord(word)" >
+                                <div class="row">
+                                    <div class="col-md-6 col-xs-6">
+                                        <md-button class="md-raised md-button md-ink-ripple" ng-if="word.hideEng" ng-click="word.hideEng = false">{{constant.show.rus}}</md-button>
+                                        <span ng-class="{'hide-td':word.hideEng}" ng-if="!word.hideEng">{{ word.eng }}</span>
+                                    </div>
+                                    <div class="col-md-6 col-xs-6">
+                                        <span ng-class="{'hide-td':word.hideRus}" ng-if="!word.hideRus">{{ word.rus }}</span>
+                                        <md-button class="md-raised md-button md-ink-ripple" ng-if="word.hideRus" ng-click="word.hideRus = false">{{constant.show.rus}}</md-button>
+                                    </div>
+                                </div>
+                            </div>
+                        </md-list-item>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+</div>
